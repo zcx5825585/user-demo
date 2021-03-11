@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.zcx.userdemo.DAO.UserMapper">
+  <resultMap id="BaseResultMap" type="org.zcx.userdemo.VO.User">
+    <id column="id" jdbcType="BIGINT" property="id" />
+    <result column="user_name" jdbcType="VARCHAR" property="userName" />
+    <result column="real_name" jdbcType="VARCHAR" property="realName" />
+    <result column="path" jdbcType="VARCHAR" property="path" />
+    <result column="level" jdbcType="VARCHAR" property="level" />
+    <result column="status" jdbcType="INTEGER" property="status" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+  </resultMap>
+  <select id="search" parameterType="java.util.Map" resultType="org.zcx.userdemo.VO.User">
+    select
+    usertable.id,
+    usertable.user_name,
+    usertable.real_name,
+    usertable.path,
+    usertable.level,
+    usertable.status,
+    usertable.create_time,
+    usertable.disable
+    from usertable
+    <where>
+      usertable.disable=0
+      <if test="query.id != null and query.id != ''">
+        and usertable.id = #{query.id}
+      </if>
+      <if test="query.userName != null and query.userName != ''">
+        and usertable.user_name = #{query.userName}
+      </if>
+      <if test="query.realName != null and query.realName != ''">
+        and usertable.real_name = #{query.realName}
+      </if>
+    </where>
+  </select>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select
+            usertable.id,
+            usertable.user_name,
+            usertable.real_name,
+            usertable.path,
+            usertable.level,
+            usertable.status,
+            usertable.create_time
+    from usertable
+    where usertable.id = #{id,jdbcType=BIGINT} and usertable.disable ='0'
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    update usertable
+    <set>
+    `disable` = '1',
+    </set>
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" keyColumn="id" keyProperty="id" parameterType="org.zcx.userdemo.VO.User">
+    insert into usertable (user_name, real_name, `path`, 
+      `level`, `status`)
+    values (#{userName,jdbcType=VARCHAR}, #{realName,jdbcType=VARCHAR}, #{path,jdbcType=VARCHAR}, 
+      #{level,jdbcType=VARCHAR}, #{status,jdbcType=INTEGER})
+  </insert>
+  <update id="updateByPrimaryKey" parameterType="org.zcx.userdemo.VO.User">
+    update usertable
+    set user_name = #{userName,jdbcType=VARCHAR},
+      real_name = #{realName,jdbcType=VARCHAR},
+      `path` = #{path,jdbcType=VARCHAR},
+      `level` = #{level,jdbcType=VARCHAR},
+      `status` = #{status,jdbcType=INTEGER}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+</mapper>
