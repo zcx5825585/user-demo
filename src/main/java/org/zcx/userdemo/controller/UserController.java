@@ -29,6 +29,8 @@ public class UserController {
             searchInfo.put("query", query);
         }
         PageHelper.startPage(pageNum, pageSize);
+        searchInfo.put("page", pageNum);
+        searchInfo.put("rows", pageSize);
         List<User> list = userService.search(searchInfo);
         PageInfo<User> pageInfo = new PageInfo<>(list);
         return HttpResult.success(pageInfo);

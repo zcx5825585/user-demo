@@ -1,12 +1,13 @@
 package org.zcx.userdemo.DAO;
 
-import org.apache.ibatis.annotations.Mapper;
+import org.springframework.stereotype.Component;
 import org.zcx.userdemo.VO.User;
 
 import java.util.List;
 import java.util.Map;
 
-@Mapper
+//@Mapper
+@Component
 public interface UserMapper {
     User selectByPrimaryKey(Long id);
 
